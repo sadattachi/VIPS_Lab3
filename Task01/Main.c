@@ -12,27 +12,42 @@ struct SBook {
   int m_nPrice;
   struct SBook* m_psbNext;
 };
-
-struct SBook* ReadStruct(
+//------------------------------------------------------------------------------
+// Gets struct field from file, parses strings, initializes fields, adds to end
+void ReadStruct(
     FILE* psfRead, 
     char szBookInfo[], 
     char szSeparators[], 
     char* pcSeparatedInfo, 
     struct SBook* psbCurrent, 
     struct SBook** psbStart);
-
+//------------------------------------------------------------------------------
+// Sorts books by release year in descending order
 void SortBooksByYear(struct SBook** psbStart);
-void SwapStructs(
+//------------------------------------------------------------------------------
+// Swaps two books in list
+void SwapBooks(
     struct SBook* psbLeft, 
     struct SBook* psbRight, 
     struct SBook** psbStart);
-
-void ReadFromFile(struct SBook** psbStart);
+//------------------------------------------------------------------------------
+// Allows you to enter data from console to add book in list
+void AddNewBookFromConsole(struct SBook** psbStart);
+//------------------------------------------------------------------------------
+// Deletes first book from list with given name
 void DeleteBookByName(struct SBook** psbStart);
+//------------------------------------------------------------------------------
+// Returns average price of books
 int CountAveragePrice(struct SBook* psbStart);
+//------------------------------------------------------------------------------
+// Using CountAveragePrice function permanently deletes every book, 
+// which price is lower that average,  from list
 void DeleteLowerThanAverage(struct SBook** psbStart);
-
+//------------------------------------------------------------------------------
+// Prints every books in console
 void PrintBooksTable(struct SBook* psbStart);
+//------------------------------------------------------------------------------
+// Prints line used to create table
 void PrintSeparatorLine();
 
 int main() {
@@ -53,7 +68,7 @@ int main() {
   SortBooksByYear(&psbStart);
   PrintBooksTable(psbStart);
   
-  ReadFromFile(&psbStart);
+  AddNewBookFromConsole(&psbStart);
   SortBooksByYear(&psbStart);
   PrintBooksTable(psbStart);
   
@@ -66,7 +81,7 @@ int main() {
   return 0;
 }
 //------------------------------------------------------------------------------
-struct SBook* ReadStruct(
+void ReadStruct(
     FILE* psfRead, 
     char szBookInfo[], 
     char szSeparators[], 
@@ -104,7 +119,7 @@ void SortBooksByYear(struct SBook** psbStart) {
     while (1) {
       if (psbStartCopy->m_psbNext->m_nYear) {
         if (psbStartCopy->m_nYear > psbStartCopy->m_psbNext->m_nYear) {
-          SwapStructs(psbStartCopy, psbStartCopy->m_psbNext, psbStart);
+          SwapBooks(psbStartCopy, psbStartCopy->m_psbNext, psbStart);
           nChecker = 0;
           break;
         } else {
@@ -120,8 +135,7 @@ void SortBooksByYear(struct SBook** psbStart) {
   }
 }
 //------------------------------------------------------------------------------
-void PrintBooksTable(struct SBook* start)
-{
+void PrintBooksTable(struct SBook* start) {
   printf("\n\n\nAuthor\t\t\tBook\t\t\t\t\t       Year\t  Pages\t       Value\n");
   PrintSeparatorLine();
   while (start->m_nYear) {
@@ -134,13 +148,12 @@ void PrintBooksTable(struct SBook* start)
   printf("\n");
 }
 //------------------------------------------------------------------------------
-void PrintSeparatorLine()
-{
+void PrintSeparatorLine() {
   for (int j = 0; j < 105; j++)
     printf("=");
 }
 //------------------------------------------------------------------------------
-void SwapStructs(
+void SwapBooks(
     struct SBook* psbLeft, 
     struct SBook* psbRight, 
     struct SBook** psbStart) {
@@ -165,8 +178,7 @@ void SwapStructs(
   }
 }
 //------------------------------------------------------------------------------
-void ReadFromFile(struct SBook** psbStart)
-{
+void AddNewBookFromConsole(struct SBook** psbStart) {
   char szInsertInfo[50];
   int nInsertInfo = 0;
   struct SBook* psbToInsert = (struct SBook*)calloc(1, sizeof(struct SBook));
@@ -195,8 +207,7 @@ void ReadFromFile(struct SBook** psbStart)
   (*psbStart) = psbToInsert;
 }
 //------------------------------------------------------------------------------
-void DeleteBookByName(struct SBook** psbStart)
-{
+void DeleteBookByName(struct SBook** psbStart) {
   struct SBook* psbStartCopy = (*psbStart);
   char szToDelete[50];
   gets();
@@ -220,8 +231,7 @@ void DeleteBookByName(struct SBook** psbStart)
   }
 }
 //------------------------------------------------------------------------------
-int CountAveragePrice(struct SBook* psbStart)
-{
+int CountAveragePrice(struct SBook* psbStart) {
   int nSum = 0;
   int nNumberOfBooks = 0;
   while (psbStart->m_psbNext->m_nYear) {
@@ -232,8 +242,7 @@ int CountAveragePrice(struct SBook* psbStart)
   return nSum / nNumberOfBooks;
 }
 //------------------------------------------------------------------------------
-void DeleteLowerThanAverage(struct SBook** psbStart)
-{
+void DeleteLowerThanAverage(struct SBook** psbStart) {
   struct SBook* psbStartCopy = (*psbStart);
   int nAverage = CountAveragePrice((*psbStart));
   while (psbStartCopy->m_nPrice < nAverage) {
