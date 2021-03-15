@@ -108,10 +108,10 @@ void SortBooksByYear(struct SBook** psbStart) {
           nChecker = 0;
           break;
         } else {
-            psbStartCopy = psbStartCopy->m_psbNext;
+          psbStartCopy = psbStartCopy->m_psbNext;
         }
       } else {
-          break;
+        break;
       }
     }
     if (nChecker) {
@@ -125,7 +125,9 @@ void PrintBooksTable(struct SBook* start)
   printf("\n\n\nAuthor\t\t\tBook\t\t\t\t\t       Year\t  Pages\t       Value\n");
   PrintSeparatorLine();
   while (start->m_nYear) {
-    printf("\n|%-15s\t|%-35s\t|%10d\t|%5d\t|\t%1d\t|\n", start->m_szAuthorFullName, start->m_szTitle, start->m_nYear, start->m_nPagesCount, start->m_nPrice);
+    printf("\n|%-15s\t|%-35s\t|%10d\t|%5d\t|\t%1d\t|\n",
+        start->m_szAuthorFullName, start->m_szTitle, start->m_nYear, 
+        start->m_nPagesCount, start->m_nPrice);
     PrintSeparatorLine();
     start = start->m_psbNext;
   }
