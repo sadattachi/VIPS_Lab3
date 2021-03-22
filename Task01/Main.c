@@ -41,7 +41,7 @@ void DeleteBookByName(struct SBook **psbStart);
 int CountAveragePrice(struct SBook *psbStart);
 //------------------------------------------------------------------------------
 /* Using CountAveragePrice function permanently deletes every book, 
-   which price is lower that average,  from list */
+   which price is lower that average, from list */
 void DeleteLowerThanAverage(struct SBook **psbStart);
 //------------------------------------------------------------------------------
 // Prints every books in console
